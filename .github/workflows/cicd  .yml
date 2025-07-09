@@ -35,6 +35,47 @@ jobs:
         path: target/*.jar
     - name: Trivy FS scan
       run: |
-        trkvy fs --format table -o trivy-fs-report.html .
+        trivy fs --format table -o trivy-fs-report.html .
+        
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@master # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+        
+    - name: Install Jq
+      run: sudo apt-get install -y jq
+
+    - name: SonarQube Quality Gate check
+      id: sonarqube-quality-gate-check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      timeout-minutes: 5
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    - name: Set up docker buidx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker Image
+      run: |
+        docker build -t arifbdjh/boardgame:latest .
+    - name: Trivy scan for docker image
+      run: |
+        trivy image --format table -o trivy-image-report.html arifbdjh/boardgame:latest
+        
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push Docker Image
+      run: |
+        docker push arifbdjh/boardgame:latest
+      
+        
+      
 
     
