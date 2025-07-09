@@ -52,7 +52,7 @@ jobs:
       timeout-minutes: 5
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }} #OPTIONAL
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: Set up docker buidx
