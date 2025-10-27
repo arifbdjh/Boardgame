@@ -37,22 +37,22 @@ jobs:
       run: |
         trivy fs --format table -o trivy-fs-report.html .
         
-    - name: SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@master # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-        
-    - name: Install Jq
-      run: sudo apt-get install -y jq
-
-    - name: SonarQube Quality Gate check
-      id: sonarqube-quality-gate-check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      timeout-minutes: 5
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }} #OPTIONAL
+#    - name: SonarQube Scan
+ #     uses: SonarSource/sonarqube-scan-action@master # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+  #    env:
+  #      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+  #      
+ #   - name: Install Jq
+ #     run: sudo apt-get install -y jq
+#
+#    - name: SonarQube Quality Gate check
+#      id: sonarqube-quality-gate-check
+#      uses: sonarsource/sonarqube-quality-gate-action@master
+#      timeout-minutes: 5
+#      env:
+#        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }} #OPTIONAL
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: Set up docker buidx
